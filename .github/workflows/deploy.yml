@@ -22,20 +22,18 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       
-    - name: Replace secrets in config
+    - name: Generate config.js
       run: |
-        # Crear config.js desde template usando un método más seguro
-        cp config.template.js config.js
+        # Generar config.js directamente sin problemas de caracteres especiales
+        cat > config.js << 'EOF'
+        const CONFIG = {
+            FORM_ENDPOINT: '${{ secrets.FORM_ENDPOINT }}',
+            RECAPTCHA_SITE_KEY: '${{ secrets.RECAPTCHA_SITE_KEY || '' }}'
+        };
+        window.CONFIG = CONFIG;
+        EOF
         
-        # Reemplazar usando variables de entorno para evitar problemas con caracteres especiales
-        ENDPOINT="${{ secrets.FORM_ENDPOINT }}"
-        RECAPTCHA="${{ secrets.RECAPTCHA_SITE_KEY }}"
-        
-        # Usar perl para reemplazo más seguro
-        perl -i -pe "s/\{\{FORM_ENDPOINT_SECRET\}\}/\Q$ENDPOINT\E/g" config.js
-        perl -i -pe "s/\{\{RECAPTCHA_SITE_KEY\}\}/\Q$RECAPTCHA\E/g" config.js
-        
-        # Verificar que se reemplazó
+        # Verificar que se generó correctamente
         echo "Config generado:"
         cat config.js
         
