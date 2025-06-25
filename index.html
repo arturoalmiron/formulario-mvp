@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Desarrollo MVP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            border-left: 5px solid #4facfe;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            font-size: 1.2em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+            transform: translateY(-2px);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: rgba(79, 172, 254, 0.05);
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(79, 172, 254, 0.1);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: rgba(79, 172, 254, 0.05);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-item:hover {
+            background: rgba(79, 172, 254, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .radio-item input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .submit-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .help-text {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4facfe;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .success-message,
+        .error-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        .success-message {
+            background: rgba(39, 174, 96, 0.1);
+            border: 2px solid #27ae60;
+            color: #27ae60;
+        }
+
+        .error-message {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid #e74c3c;
+            color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Formulario de Desarrollo MVP</h1>
+            <p>Completa la información para crear tu aplicación perfecta</p>
+        </div>
+
+        <div class="form-container">
+            <form id="mvpForm">
+                <!-- Información del Cliente -->
+                <div class="section">
+                    <h2><span class="section-icon">👤</span>Información del Cliente</h2>
+
+                    <div class="form-group">
+                        <label for="name">Nombre Completo <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company">Empresa/Organización</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+                </div>
+
+                <!-- Información del Proyecto -->
+                <div class="section">
+                    <h2><span class="section-icon">💡</span>Información del Proyecto</h2>
+
+                    <div class="form-group">
+                        <label for="projectName">Nombre del Proyecto <span class="required">*</span></label>
+                        <input type="text" id="projectName" name="projectName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectDescription">Descripción del Proyecto <span class="required">*</span></label>
+                        <textarea id="projectDescription" name="projectDescription" required
+                            placeholder="Describe tu idea, qué problema resuelve, y cómo funcionará"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="targetAudience">Audiencia Objetivo <span class="required">*</span></label>
+                        <textarea id="targetAudience" name="targetAudience" required
+                            placeholder="¿Quiénes usarán tu aplicación? Edad, profesión, características"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="competitors">Competidores o Referencias</label>
+                        <textarea id="competitors" name="competitors"
+                            placeholder="Menciona aplicaciones similares o que te inspiren"></textarea>
+                    </div>
+                </div>
+
+                <!-- Tipo de Aplicación -->
+                <div class="section">
+                    <h2><span class="section-icon">📱</span>Tipo de Aplicación</h2>
+
+                    <div class="form-group">
+                        <label>Plataforma <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="web" name="platform" value="Aplicación Web" required>
+                                <label for="web">Aplicación Web</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="mobile" name="platform" value="Aplicación Móvil" required>
+                                <label for="mobile">Aplicación Móvil</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="both" name="platform" value="Web y Móvil" required>
+                                <label for="both">Ambas</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="mobileOS" style="display: none;">
+                        <label>Sistema Operativo Móvil</label>
+                        <input type="hidden" id="mobileOSList" name="mobileOS" value="">
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ios" value="iOS">
+                                <label for="ios">iOS (iPhone/iPad)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="android" value="Android">
+                                <label for="android">Android</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Funcionalidades Principales -->
+                <div class="section">
+                    <h2><span class="section-icon">⚡</span>Funcionalidades Principales</h2>
+
+                    <div class="form-group">
+                        <label>Funcionalidades Básicas <span class="required">*</span></label>
+                        <input type="hidden" id="featuresList" name="features" value="">
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="userAuth" value="Registro/Login de usuarios">
+                                <label for="userAuth">Registro/Login de usuarios</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="userProfile" value="Perfil de usuario">
+                                <label for="userProfile">Perfil de usuario</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="dashboard" value="Panel de control/Dashboard">
+                                <label for="dashboard">Panel de control/Dashboard</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="search" value="Buscador">
+                                <label for="search">Buscador</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="notifications" value="Notificaciones">
+                                <label for="notifications">Notificaciones</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chat" value="Chat/Mensajería">
+                                <label for="chat">Chat/Mensajería</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="fileUpload" value="Subida de archivos">
+                                <label for="fileUpload">Subida de archivos</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ecommerce" value="E-commerce/Pagos">
+                                <label for="ecommerce">E-commerce/Pagos</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="social" value="Funciones sociales">
+                                <label for="social">Funciones sociales</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="geolocation" value="Geolocalización">
+                                <label for="geolocation">Geolocalización</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="calendar" value="Calendario/Agenda">
+                                <label for="calendar">Calendario/Agenda</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="reports" value="Reportes/Análisis">
+                                <label for="reports">Reportes/Análisis</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customFeatures">Funcionalidades Específicas</label>
+                        <textarea id="customFeatures" name="customFeatures"
+                            placeholder="Describe funcionalidades específicas de tu proyecto que no están en la lista anterior"></textarea>
+                    </div>
+                </div>
+
+                <!-- Diseño y UI/UX -->
+                <div class="section">
+                    <h2><span class="section-icon">🎨</span>Diseño y UI/UX</h2>
+
+                    <div class="form-group">
+                        <label for="designStyle">Estilo de Diseño Preferido</label>
+                        <select id="designStyle" name="designStyle">
+                            <option value="">Selecciona un estilo</option>
+                            <option value="Moderno y minimalista">Moderno y minimalista</option>
+                            <option value="Corporativo y profesional">Corporativo y profesional</option>
+                            <option value="Creativo y artístico">Creativo y artístico</option>
+                            <option value="Divertido y colorido">Divertido y colorido</option>
+                            <option value="Elegante y sofisticado">Elegante y sofisticado</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="colorPreferences">Preferencias de Color</label>
+                        <input type="text" id="colorPreferences" name="colorPreferences"
+                            placeholder="Ej: Azul corporativo, colores vibrantes, tonos neutros">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="logoAvailable">¿Tienes logo/branding existente?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="logoYes" name="logoAvailable" value="Sí">
+                                <label for="logoYes">Sí</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="logoNo" name="logoAvailable" value="No">
+                                <label for="logoNo">No</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="logoPartial" name="logoAvailable" value="Parcialmente">
+                                <label for="logoPartial">Parcialmente</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="designReferences">Referencias de Diseño</label>
+                        <textarea id="designReferences" name="designReferences"
+                            placeholder="Comparte URLs de aplicaciones o sitios web que te gusten visualmente"></textarea>
+                    </div>
+                </div>
+
+                <!-- Aspectos Técnicos -->
+                <div class="section">
+                    <h2><span class="section-icon">⚙️</span>Aspectos Técnicos</h2>
+
+                    <div class="form-group">
+                        <label for="userVolume">Volumen de Usuarios Esperado</label>
+                        <select id="userVolume" name="userVolume">
+                            <option value="">Selecciona un rango</option>
+                            <option value="1-100 usuarios">1-100 usuarios</option>
+                            <option value="100-1,000 usuarios">100-1,000 usuarios</option>
+                            <option value="1,000-10,000 usuarios">1,000-10,000 usuarios</option>
+                            <option value="10,000+ usuarios">10,000+ usuarios</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Integraciones Necesarias</label>
+                        <input type="hidden" id="integrationsList" name="integrations" value="">
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="socialLogin" value="Login con redes sociales">
+                                <label for="socialLogin">Login con redes sociales</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="paymentGateway" value="Pasarela de pagos">
+                                <label for="paymentGateway">Pasarela de pagos</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="emailService" value="Servicio de email">
+                                <label for="emailService">Servicio de email</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="smsService" value="Servicio de SMS">
+                                <label for="smsService">Servicio de SMS</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="analytics" value="Google Analytics">
+                                <label for="analytics">Google Analytics</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="crm" value="CRM existente">
+                                <label for="crm">CRM existente</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="api" value="APIs externas">
+                                <label for="api">APIs externas</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="existingSystems">Sistemas Existentes a Integrar</label>
+                        <textarea id="existingSystems" name="existingSystems"
+                            placeholder="Describe cualquier sistema, base de datos o API que necesite integrarse"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hostingPreference">Preferencia de Hosting</label>
+                        <select id="hostingPreference" name="hostingPreference">
+                            <option value="">Sin preferencia</option>
+                            <option value="Servicios en la nube (AWS, Google Cloud)">Servicios en la nube (AWS, Google
+                                Cloud)</option>
+                            <option value="Hosting compartido">Hosting compartido</option>
+                            <option value="Servidor dedicado">Servidor dedicado</option>
+                            <option value="Hosting administrado">Hosting administrado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Cronograma y Presupuesto -->
+                <div class="section">
+                    <h2><span class="section-icon">📅</span>Cronograma y Presupuesto</h2>
+
+                    <div class="form-group">
+                        <label for="timeline">Fecha Límite Deseada</label>
+                        <select id="timeline" name="timeline">
+                            <option value="">Selecciona un plazo</option>
+                            <option value="Menos de 1 mes">Menos de 1 mes</option>
+                            <option value="1-2 meses">1-2 meses</option>
+                            <option value="2-4 meses">2-4 meses</option>
+                            <option value="4-6 meses">4-6 meses</option>
+                            <option value="Más de 6 meses">Más de 6 meses</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget">Presupuesto Aproximado (USD)</label>
+                        <select id="budget" name="budget">
+                            <option value="">Selecciona un rango</option>
+                            <option value="$1,000 - $5,000">$1,000 - $5,000</option>
+                            <option value="$5,000 - $15,000">$5,000 - $15,000</option>
+                            <option value="$15,000 - $50,000">$15,000 - $50,000</option>
+                            <option value="$50,000+">$50,000+</option>
+                            <option value="Prefiero discutirlo">Prefiero discutirlo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentModel">Modelo de Pago Preferido</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="paymentFixed" name="paymentModel" value="Precio fijo">
+                                <label for="paymentFixed">Precio fijo</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="paymentHourly" name="paymentModel" value="Por horas">
+                                <label for="paymentHourly">Por horas</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="paymentMilestone" name="paymentModel" value="Por hitos">
+                                <label for="paymentMilestone">Por hitos</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mantenimiento y Soporte -->
+                <div class="section">
+                    <h2><span class="section-icon">🔧</span>Mantenimiento y Soporte</h2>
+
+                    <div class="form-group">
+                        <label for="maintenanceNeeded">¿Necesitas mantenimiento continuo?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="maintenanceYes" name="maintenanceNeeded" value="Sí">
+                                <label for="maintenanceYes">Sí</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="maintenanceNo" name="maintenanceNeeded" value="No">
+                                <label for="maintenanceNo">No</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="maintenanceUnsure" name="maintenanceNeeded"
+                                    value="No estoy seguro">
+                                <label for="maintenanceUnsure">No estoy seguro</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="supportLevel">Nivel de Soporte Requerido</label>
+                        <select id="supportLevel" name="supportLevel">
+                            <option value="">Selecciona un nivel</option>
+                            <option value="Básico (corrección de errores)">Básico (corrección de errores)</option>
+                            <option value="Estándar (actualizaciones menores)">Estándar (actualizaciones menores)
+                            </option>
+                            <option value="Premium (nuevas funcionalidades)">Premium (nuevas funcionalidades)</option>
+                            <option value="Empresarial (soporte 24/7)">Empresarial (soporte 24/7)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="trainingNeeded">¿Necesitas capacitación para usar la aplicación?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="trainingYes" name="trainingNeeded" value="Sí">
+                                <label for="trainingYes">Sí</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="trainingNo" name="trainingNeeded" value="No">
+                                <label for="trainingNo">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información Adicional -->
+                <div class="section">
+                    <h2><span class="section-icon">📝</span>Información Adicional</h2>
+
+                    <div class="form-group">
+                        <label for="message">Información Adicional</label>
+                        <textarea id="message" name="message"
+                            placeholder="Cualquier detalle adicional que consideres importante, preguntas específicas, o preferencias de comunicación"></textarea>
+                    </div>
+                </div>
+
+                <div class="submit-container">
+                    <button type="submit" class="submit-btn" id="submitBtn">Enviar Formulario 🚀</button>
+                    <div class="loading" id="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Enviando tu información...</p>
+                    </div>
+                    <div class="success-message" id="successMessage">
+                        <h3>✅ ¡Formulario enviado con éxito!</h3>
+                        <p>Gracias por tu interés. Revisaré tu información y me contactaré contigo pronto para discutir
+                            tu proyecto.</p>
+                    </div>
+                    <div class="error-message" id="errorMessage">
+                        <h3>❌ Error al enviar el formulario</h3>
+                        <p>Por favor, intenta nuevamente en unos momentos. Si el problema persiste, contáctame
+                            directamente.</p>
+                    </div>
+                    <p class="help-text">Todos los datos son confidenciales y se utilizan únicamente para evaluar tu
+                        proyecto</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configuración de FormEasy - REEMPLAZA CON TU URL DE GOOGLE APPS SCRIPT
+        const FORM_ENDPOINT = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+
+        // Mostrar/ocultar sección de SO móvil
+        document.querySelectorAll('input[name="platform"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                const mobileOS = document.getElementById('mobileOS');
+                if (this.value === 'Aplicación Móvil' || this.value === 'Web y Móvil') {
+                    mobileOS.style.display = 'block';
+                } else {
+                    mobileOS.style.display = 'none';
+                }
+            });
+        });
+
+        // Manejar checkboxes para campos múltiples
+        function updateHiddenField(checkboxes, hiddenFieldId) {
+            const selectedValues = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            document.getElementById(hiddenFieldId).value = selectedValues.join(', ');
+        }
+
+        // Configurar listeners para checkboxes
+        document.querySelectorAll('#mobileOS input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                updateHiddenField(
+                    document.querySelectorAll('#mobileOS input[type="checkbox"]'),
+                    'mobileOSList'
+                );
+            });
+        });
+
+        document.querySelectorAll('.checkbox-group input[type="checkbox"]:not(#ios):not(#android)').forEach(cb => {
+            if (cb.closest('#mobileOS')) return; // Skip mobile OS checkboxes
+
+            cb.addEventListener('change', () => {
+                if (cb.closest('.section').querySelector('h2 .section-icon').textContent === '⚡') {
+                    // Features section
+                    updateHiddenField(
+                        document.querySelectorAll('#userAuth, #userProfile, #dashboard, #search, #notifications, #chat, #fileUpload, #ecommerce, #social, #geolocation, #calendar, #reports'),
+                        'featuresList'
+                    );
+                } else if (cb.closest('.section').querySelector('h2 .section-icon').textContent === '⚙️') {
+                    // Integrations section
+                    updateHiddenField(
+                        document.querySelectorAll('#socialLogin, #paymentGateway, #emailService, #smsService, #analytics, #crm, #api'),
+                        'integrationsList'
+                    );
+                }
+            });
+        });
+
+        // Manejar envío del formulario
+        document.getElementById('mvpForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Mostrar loading
+            submitBtn.disabled = true;
+            loading.style.display = 'block';
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+
+            try {
+                // Recopilar datos del formulario
+                const formData = new FormData(this);
+                const data = {};
+
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+
+                // Crear mensaje estructurado para FormEasy
+                const formattedMessage = `
+=== NUEVO PROYECTO MVP ===
+
+👤 CLIENTE:
+• Nombre: ${data.name || 'No especificado'}
+• Email: ${data.email || 'No especificado'}
+• Teléfono: ${data.phone || 'No especificado'}
+• Empresa: ${data.company || 'No especificado'}
+
+💡 PROYECTO:
+• Nombre: ${data.projectName || 'No especificado'}
+• Descripción: ${data.projectDescription || 'No especificado'}
+• Audiencia: ${data.targetAudience || 'No especificado'}
+• Competidores: ${data.competitors || 'No especificado'}
+
+📱 PLATAFORMA:
+• Tipo: ${data.platform || 'No especificado'}
+• SO Móvil: ${data.mobileOS || 'No especificado'}
+
+⚡ FUNCIONALIDADES:
+• Características: ${data.features || 'No especificado'}
+• Específicas: ${data.customFeatures || 'No especificado'}
+
+🎨 DISEÑO:
+• Estilo: ${data.designStyle || 'No especificado'}
+• Colores: ${data.colorPreferences || 'No especificado'}
+• Logo: ${data.logoAvailable || 'No especificado'}
+• Referencias: ${data.designReferences || 'No especificado'}
+
+⚙️ TÉCNICO:
+• Usuarios: ${data.userVolume || 'No especificado'}
+• Integraciones: ${data.integrations || 'No especificado'}
+• Sistemas: ${data.existingSystems || 'No especificado'}
+• Hosting: ${data.hostingPreference || 'No especificado'}
+
+📅 CRONOGRAMA:
+• Timeline: ${data.timeline || 'No especificado'}
+• Presupuesto: ${data.budget || 'No especificado'}
+• Pago: ${data.paymentModel || 'No especificado'}
+
+🔧 SOPORTE:
+• Mantenimiento: ${data.maintenanceNeeded || 'No especificado'}
+• Nivel: ${data.supportLevel || 'No especificado'}
+• Capacitación: ${data.trainingNeeded || 'No especificado'}
+
+📝 ADICIONAL:
+${data.message || 'No especificado'}
+                `;
+
+                // Preparar datos para FormEasy (formato estándar: name, email, message)
+                const formEasyData = {
+                    name: data.name,
+                    email: data.email,
+                    message: formattedMessage
+                };
+
+                // Enviar a FormEasy
+                const response = await fetch(FORM_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
+                    body: JSON.stringify(formEasyData)
+                });
+
+                const result = await response.json();
+
+                if (result.result === 'success') {
+                    successMessage.style.display = 'block';
+                    this.reset(); // Limpiar formulario
+                } else {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                errorMessage.style.display = 'block';
+            } finally {
+                // Ocultar loading y habilitar botón
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Animaciones suaves al hacer scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'all 0.6s ease';
+            observer.observe(section);
+        });
+
+        // Validación en tiempo real
+        document.querySelectorAll('input[required], textarea[required]').forEach(field => {
+            field.addEventListener('blur', function () {
+                if (this.value.trim() === '') {
+                    this.style.borderColor = '#e74c3c';
+                    this.style.boxShadow = '0 0 0 3px rgba(231, 76, 60, 0.1)';
+                } else {
+                    this.style.borderColor = '#27ae60';
+                    this.style.boxShadow = '0 0 0 3px rgba(39, 174, 96, 0.1)';
+                }
+            });
+        });
+
+        // Contador de caracteres para áreas de texto largas
+        document.querySelectorAll('textarea').forEach(textarea => {
+            const counter = document.createElement('div');
+            counter.style.cssText = 'font-size: 12px; color: #666; text-align: right; margin-top: 5px;';
+            textarea.parentNode.appendChild(counter);
+
+            function updateCounter() {
+                const length = textarea.value.length;
+                counter.textContent = `${length} caracteres`;
+                if (length > 500) {
+                    counter.style.color = '#e74c3c';
+                } else if (length > 300) {
+                    counter.style.color = '#f39c12';
+                } else {
+                    counter.style.color = '#666';
+                }
+            }
+
+            textarea.addEventListener('input', updateCounter);
+            updateCounter();
+        });
+
+        // Efectos de hover mejorados
+        document.querySelectorAll('.checkbox-item, .radio-item').forEach(item => {
+            item.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateX(5px)';
+            });
+
+            item.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Prevenir envío si el endpoint no está configurado
+        if (FORM_ENDPOINT.includes('YOUR_DEPLOYMENT_ID')) {
+            document.getElementById('submitBtn').addEventListener('click', function (e) {
+                if (FORM_ENDPOINT.includes('YOUR_DEPLOYMENT_ID')) {
+                    e.preventDefault();
+                    alert('⚠️ Por favor, configura primero tu endpoint de FormEasy en el archivo JavaScript.\n\nReemplaza YOUR_DEPLOYMENT_ID con tu ID de despliegue real.');
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
