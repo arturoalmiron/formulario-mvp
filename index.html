@@ -838,11 +838,12 @@ ${data.message || 'No especificado'}
 
                 const result = await response.json();
 
-                if (result.result === 'success') {
+                // FormEasy devuelve {status: 'OK'} cuando funciona correctamente
+                if (result.status === 'OK' || result.result === 'success') {
                     successMessage.style.display = 'block';
                     this.reset(); // Limpiar formulario
                 } else {
-                    throw new Error('Error en la respuesta del servidor');
+                    throw new Error(`Error del servidor: ${result.message || JSON.stringify(result)}`);
                 }
 
             } catch (error) {
