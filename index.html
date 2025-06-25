@@ -691,9 +691,10 @@
         </div>
     </div>
 
+    <script src="config.js"></script>
     <script>
-        // Configuración de FormEasy - REEMPLAZA CON TU URL DE GOOGLE APPS SCRIPT
-        const FORM_ENDPOINT = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+        // Configuración de FormEasy - Se carga desde config.js
+        // const FORM_ENDPOINT se obtiene de CONFIG.FORM_ENDPOINT
 
         // Mostrar/ocultar sección de SO móvil
         document.querySelectorAll('input[name="platform"]').forEach(radio => {
@@ -827,7 +828,7 @@ ${data.message || 'No especificado'}
                 };
 
                 // Enviar a FormEasy
-                const response = await fetch(FORM_ENDPOINT, {
+                const response = await fetch(CONFIG.FORM_ENDPOINT, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'text/plain;charset=utf-8',
@@ -918,12 +919,10 @@ ${data.message || 'No especificado'}
         });
 
         // Prevenir envío si el endpoint no está configurado
-        if (FORM_ENDPOINT.includes('YOUR_DEPLOYMENT_ID')) {
+        if (!CONFIG || !CONFIG.FORM_ENDPOINT || CONFIG.FORM_ENDPOINT.includes('{{')) {
             document.getElementById('submitBtn').addEventListener('click', function (e) {
-                if (FORM_ENDPOINT.includes('YOUR_DEPLOYMENT_ID')) {
-                    e.preventDefault();
-                    alert('⚠️ Por favor, configura primero tu endpoint de FormEasy en el archivo JavaScript.\n\nReemplaza YOUR_DEPLOYMENT_ID con tu ID de despliegue real.');
-                }
+                e.preventDefault();
+                alert('⚠️ Configuración no disponible. Por favor, verifica que el endpoint esté configurado correctamente.');
             });
         }
     </script>

@@ -1,0 +1,17 @@
+# Archivos de configuración con secrets
+config.js
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencias
+node_modules/
+
+# Archivos temporales
+*.tmp
+*.temp 
