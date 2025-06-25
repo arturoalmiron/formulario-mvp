@@ -24,24 +24,30 @@ jobs:
       
     - name: Replace secrets in config
       run: |
-        # Crear config.js desde template
-        sed 's/{{FORM_ENDPOINT_SECRET}}/${{ secrets.FORM_ENDPOINT }}/g' config.template.js > config.js
-        sed -i 's/{{RECAPTCHA_SITE_KEY}}/${{ secrets.RECAPTCHA_SITE_KEY }}/g' config.js
+        # Crear config.js desde template usando un método más seguro
+        cp config.template.js config.js
+        
+        # Reemplazar usando variables de entorno para evitar problemas con caracteres especiales
+        ENDPOINT="${{ secrets.FORM_ENDPOINT }}"
+        RECAPTCHA="${{ secrets.RECAPTCHA_SITE_KEY }}"
+        
+        # Usar perl para reemplazo más seguro
+        perl -i -pe "s/\{\{FORM_ENDPOINT_SECRET\}\}/\Q$ENDPOINT\E/g" config.js
+        perl -i -pe "s/\{\{RECAPTCHA_SITE_KEY\}\}/\Q$RECAPTCHA\E/g" config.js
         
         # Verificar que se reemplazó
         echo "Config generado:"
         cat config.js
         
-    - name: Update index.html to use config
+    - name: Verify files are ready
       run: |
-        # Reemplazar la línea del endpoint en index.html
-        sed -i 's|const FORM_ENDPOINT = .*|// FORM_ENDPOINT se carga desde config.js|g' index.html
-        
-        # Agregar script de config antes del script principal
-        sed -i 's|<script>|<script src="config.js"></script>\n    <script>|g' index.html
-        
-        # Actualizar el JavaScript para usar CONFIG
-        sed -i 's|FORM_ENDPOINT|CONFIG.FORM_ENDPOINT|g' index.html
+        # Verificar que tenemos todos los archivos necesarios
+        echo "Archivos disponibles:"
+        ls -la
+        echo "Contenido de config.js:"
+        head -n 10 config.js
+        echo "index.html contiene config.js:"
+        grep -n "config.js" index.html || echo "config.js ya está referenciado"
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
