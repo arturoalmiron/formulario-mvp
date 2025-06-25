@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario MVP - Versión Temporal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .config-section {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #007bff;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .success {
+            color: green;
+            margin-top: 10px;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🚀 Formulario MVP - Prueba Rápida</h1>
+
+    <div class="config-section">
+        <h3>⚙️ Configuración</h3>
+        <div class="form-group">
+            <label for="endpoint">URL de tu Apps Script:</label>
+            <input type="url" id="endpoint" placeholder="https://script.google.com/macros/s/TU_ID/exec">
+            <small>Pega aquí la URL que obtuviste de Google Apps Script</small>
+        </div>
+    </div>
+
+    <h3>📝 Datos del Cliente</h3>
+    <div class="form-group">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+    </div>
+
+    <div class="form-group">
+        <label for="message">Mensaje/Proyecto:</label>
+        <textarea id="message" rows="4" placeholder="Describe tu proyecto brevemente"></textarea>
+    </div>
+
+    <button onclick="sendForm()">Enviar Prueba</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function sendForm() {
+            const endpoint = document.getElementById('endpoint').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const resultDiv = document.getElementById('result');
+
+            if (!endpoint) {
+                resultDiv.innerHTML = '<div class="error">❌ Por favor, ingresa la URL de tu Apps Script</div>';
+                return;
+            }
+
+            if (!name || !email) {
+                resultDiv.innerHTML = '<div class="error">❌ Por favor, completa nombre y email</div>';
+                return;
+            }
+
+            try {
+                resultDiv.innerHTML = '<div>⏳ Enviando...</div>';
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        message: `PRUEBA DE FORMULARIO\n\nProyecto: ${message}`
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.result === 'success') {
+                    resultDiv.innerHTML = '<div class="success">✅ ¡Formulario enviado correctamente! Revisa tu email.</div>';
+                    document.getElementById('name').value = '';
+                    document.getElementById('email').value = '';
+                    document.getElementById('message').value = '';
+                } else {
+                    resultDiv.innerHTML = '<div class="error">❌ Error: ' + JSON.stringify(result) + '</div>';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '<div class="error">❌ Error de conexión: ' + error.message + '</div>';
+            }
+        }
+    </script>
+</body>
+
+</html>
