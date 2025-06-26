@@ -14,7 +14,8 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fa;
+            background: #f8fafc;
+            /* slate-50 */
             min-height: 100vh;
             padding: 20px;
         }
@@ -22,18 +23,22 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            /* slate-200 */
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: #2563eb;
+            /* blue-600 */
             color: white;
             padding: 30px;
             text-align: center;
+            border-bottom: 1px solid #1d4ed8;
+            /* blue-700 */
         }
 
         .header h1 {
@@ -54,14 +59,18 @@
         .section {
             margin-bottom: 40px;
             padding: 25px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 15px;
-            border-left: 5px solid #4facfe;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+            /* blue-600 */
+            border: 1px solid #e2e8f0;
+            /* slate-200 */
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         }
 
         .section h2 {
-            color: #333;
+            color: #0f172a;
+            /* slate-900 */
             margin-bottom: 20px;
             font-size: 1.5em;
             display: flex;
@@ -81,7 +90,8 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #555;
+            color: #334155;
+            /* slate-700 */
         }
 
         input[type="text"],
@@ -93,20 +103,24 @@
         select {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            /* slate-300 */
+            border-radius: 6px;
             font-size: 16px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             background: white;
+            color: #0f172a;
+            /* slate-900 */
         }
 
         input:focus,
         textarea:focus,
         select:focus {
             outline: none;
-            border-color: #4facfe;
-            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
-            transform: translateY(-2px);
+            border-color: #2563eb;
+            /* blue-600 */
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            /* blue-600 with opacity */
         }
 
         textarea {
@@ -126,13 +140,17 @@
             align-items: center;
             gap: 8px;
             padding: 10px;
-            background: rgba(79, 172, 254, 0.05);
-            border-radius: 8px;
-            transition: background 0.3s ease;
+            background: #f1f5f9;
+            /* slate-100 */
+            border-radius: 6px;
+            transition: background 0.2s ease;
+            border: 1px solid #e2e8f0;
+            /* slate-200 */
         }
 
         .checkbox-item:hover {
-            background: rgba(79, 172, 254, 0.1);
+            background: #e2e8f0;
+            /* slate-200 */
         }
 
         .checkbox-item input[type="checkbox"] {
@@ -152,15 +170,20 @@
             align-items: center;
             gap: 8px;
             padding: 10px 15px;
-            background: rgba(79, 172, 254, 0.05);
-            border-radius: 25px;
+            background: #f1f5f9;
+            /* slate-100 */
+            border-radius: 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+            /* slate-200 */
         }
 
         .radio-item:hover {
-            background: rgba(79, 172, 254, 0.1);
-            transform: translateY(-2px);
+            background: #e2e8f0;
+            /* slate-200 */
+            border-color: #cbd5e1;
+            /* slate-300 */
         }
 
         .radio-item input[type="radio"] {
@@ -169,23 +192,25 @@
         }
 
         .submit-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #2563eb;
+            /* blue-600 */
             color: white;
             padding: 15px 40px;
             border: none;
-            border-radius: 50px;
+            border-radius: 6px;
             font-size: 1.1em;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             width: 100%;
             max-width: 300px;
         }
 
         .submit-btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            background: #1d4ed8;
+            /* blue-700 */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .submit-btn:disabled {
@@ -197,18 +222,61 @@
             text-align: center;
             margin-top: 40px;
             padding-top: 30px;
-            border-top: 2px solid #e0e0e0;
+            border-top: 1px solid #e2e8f0;
+            /* slate-200 */
         }
 
         .required {
-            color: #e74c3c;
+            color: #dc2626;
+            /* red-600 */
         }
 
         .help-text {
             font-size: 0.9em;
-            color: #666;
+            color: #64748b;
+            /* slate-500 */
             margin-top: 5px;
             font-style: italic;
+        }
+
+        .success-message {
+            display: none;
+            background: #dcfce7;
+            /* green-100 */
+            color: #15803d;
+            /* green-700 */
+            border: 1px solid #bbf7d0;
+            /* green-200 */
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .success-message h3 {
+            color: #15803d;
+            /* green-700 */
+            margin-bottom: 10px;
+        }
+
+        .error-message {
+            display: none;
+            background: #fef2f2;
+            /* red-50 */
+            color: #b91c1c;
+            /* red-700 */
+            border: 1px solid #fecaca;
+            /* red-200 */
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .error-message h3 {
+            color: #b91c1c;
+            /* red-700 */
+            margin-bottom: 10px;
         }
 
         .loading {
@@ -218,8 +286,10 @@
         }
 
         .loading-spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #4facfe;
+            border: 3px solid #e2e8f0;
+            /* slate-200 */
+            border-top: 3px solid #2563eb;
+            /* blue-600 */
             border-radius: 50%;
             width: 30px;
             height: 30px;
@@ -877,11 +947,11 @@ ${data.message || 'No especificado'}
         document.querySelectorAll('input[required], textarea[required]').forEach(field => {
             field.addEventListener('blur', function () {
                 if (this.value.trim() === '') {
-                    this.style.borderColor = '#e74c3c';
-                    this.style.boxShadow = '0 0 0 3px rgba(231, 76, 60, 0.1)';
+                    this.style.borderColor = '#dc2626'; /* red-600 */
+                    this.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
                 } else {
-                    this.style.borderColor = '#27ae60';
-                    this.style.boxShadow = '0 0 0 3px rgba(39, 174, 96, 0.1)';
+                    this.style.borderColor = '#059669'; /* emerald-600 */
+                    this.style.boxShadow = '0 0 0 3px rgba(5, 150, 105, 0.1)';
                 }
             });
         });
@@ -889,18 +959,18 @@ ${data.message || 'No especificado'}
         // Contador de caracteres para áreas de texto largas
         document.querySelectorAll('textarea').forEach(textarea => {
             const counter = document.createElement('div');
-            counter.style.cssText = 'font-size: 12px; color: #666; text-align: right; margin-top: 5px;';
+            counter.style.cssText = 'font-size: 12px; color: #64748b; text-align: right; margin-top: 5px;'; /* slate-500 */
             textarea.parentNode.appendChild(counter);
 
             function updateCounter() {
                 const length = textarea.value.length;
                 counter.textContent = `${length} caracteres`;
                 if (length > 500) {
-                    counter.style.color = '#e74c3c';
+                    counter.style.color = '#dc2626'; /* red-600 */
                 } else if (length > 300) {
-                    counter.style.color = '#f39c12';
+                    counter.style.color = '#d97706'; /* amber-600 */
                 } else {
-                    counter.style.color = '#666';
+                    counter.style.color = '#64748b'; /* slate-500 */
                 }
             }
 
